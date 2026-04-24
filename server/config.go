@@ -104,5 +104,15 @@ func ParseConfig(bytes []byte) (*Config, error) {
 		c.Sessions.Key = v
 	}
 
+	switch c.Options.PendingStatusState {
+	case "pending", "failure", "error":
+		// ok
+	default:
+		return nil, errors.Errorf(
+			"invalid options.pending_status_state %q: must be one of pending, failure, error",
+			c.Options.PendingStatusState,
+		)
+	}
+
 	return &c, nil
 }

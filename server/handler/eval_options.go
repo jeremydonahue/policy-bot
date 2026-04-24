@@ -29,6 +29,7 @@ const (
 	DefaultSharedRepository   = ".github"
 	DefaultSharedPolicyPath   = "policy.yml"
 	DefaultStatusCheckContext = "policy-bot"
+	DefaultPendingStatusState = "pending"
 )
 
 type PullEvaluationOptions struct {
@@ -43,6 +44,14 @@ type PullEvaluationOptions struct {
 	// StatusCheckContext will be used to create the status context. It will be used in the following
 	// pattern: <StatusCheckContext>: <Base Branch Name>
 	StatusCheckContext string `yaml:"status_check_context"`
+
+	// PendingStatusState is the GitHub commit-status state to report when a
+	// rule's overall result is StatusPending (e.g., awaiting approval or a
+	// required condition). Valid values: "pending" (default), "failure",
+	// "error". Set to "failure" to surface unmet approval rules as a red
+	// check in the GitHub UI instead of a yellow "in progress" dot, which
+	// is often mistaken for "the check hasn't run yet."
+	PendingStatusState string `yaml:"pending_status_state"`
 
 	// ExpandRequiredReviewers enables a UI feature where the details page
 	// shows a list of the users who can approve each rule. Enabling this
@@ -107,6 +116,10 @@ func (p *PullEvaluationOptions) fillDefaults() {
 	if p.StatusCheckContext == "" {
 		p.StatusCheckContext = DefaultStatusCheckContext
 	}
+
+	if p.PendingStatusState == "" {
+		p.PendingStatusState = DefaultPendingStatusState
+	}
 }
 
 func (p *PullEvaluationOptions) SetValuesFromEnv(prefix string) {
@@ -114,6 +127,7 @@ func (p *PullEvaluationOptions) SetValuesFromEnv(prefix string) {
 	setStringPtrFromEnv("SHARED_REPOSITORY", prefix, &p.SharedRepository)
 	setStringPtrFromEnv("SHARED_POLICY_PATH", prefix, &p.SharedPolicyPath)
 	setStringFromEnv("STATUS_CHECK_CONTEXT", prefix, &p.StatusCheckContext)
+	setStringFromEnv("PENDING_STATUS_STATE", prefix, &p.PendingStatusState)
 	setBoolFromEnv("FORCE_SHARED_POLICY", prefix, &p.ForceSharedPolicy)
 	setBoolFromEnv("EXPAND_REQUIRED_REVIEWERS", prefix, &p.ExpandRequiredReviewers)
 	setBoolFromEnv("STRICT_REVIEW_DISMISSAL", prefix, &p.StrictReviewDismissal)

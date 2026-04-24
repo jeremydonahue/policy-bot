@@ -122,6 +122,14 @@ sessions:
 #   # POLICYBOT_OPTIONS_STATUS_CHECK_CONTEXT environment variable.
 #   status_check_context: policy-bot
 #
+#   # The GitHub commit-status state to report when a rule's overall result
+#   # is "pending" (waiting on approval or a required condition). Valid
+#   # values: "pending" (default), "failure", "error". Set to "failure" to
+#   # surface unmet approval rules as a red check in the GitHub UI instead
+#   # of a yellow "in progress" dot. Can also be set by the
+#   # POLICYBOT_OPTIONS_PENDING_STATUS_STATE environment variable.
+#   pending_status_state: pending
+#
 #   # If true, expand teams, organizations, and permissions in the detils UI to
 #   # a list of users. This option has security implications; see the README.
 #   # Can also be set by the POLICYBOT_OPTIONS_EXPAND_REQUIRED_REVIEWERS

@@ -53,6 +53,12 @@ func TestPullEvaluationOptions_SetValuesFromEnv(t *testing.T) {
 				opts.StatusCheckContext = "custom-policy-bot"
 			},
 		},
+		"PendingStatusState": {
+			Env: map[string]string{"PEO_PENDING_STATUS_STATE": "failure"},
+			SetExpected: func(opts *PullEvaluationOptions) {
+				opts.PendingStatusState = "failure"
+			},
+		},
 		"ForceSharedPolicy": {
 			Env: map[string]string{"PEO_FORCE_SHARED_POLICY": "true"},
 			SetExpected: func(opts *PullEvaluationOptions) {
@@ -410,6 +416,7 @@ func TestPullEvaluationOptions_SetValuesFromEnv(t *testing.T) {
 				SharedRepository:   new(DefaultSharedRepository),
 				SharedPolicyPath:   new(DefaultSharedPolicyPath),
 				StatusCheckContext: DefaultStatusCheckContext,
+				PendingStatusState: DefaultPendingStatusState,
 			}
 			test.SetExpected(&expected)
 
